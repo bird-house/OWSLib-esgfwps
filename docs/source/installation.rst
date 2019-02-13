@@ -16,4 +16,4 @@ Check out code from the birdhouse `GitHub repo`_ and start the installation:
    $ conda env create -f environment.yml
    $ python setup.py install
 
-.. _Github repo: https://github.com/bird-house/owslib_esgfwps
+.. _Github repo: https://github.com/bird-house/owslib-esgfwps
