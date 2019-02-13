@@ -1,0 +1,7 @@
+include Makefile
+include *.txt
+include *.rst
+graft owslib_esgfwps
+
+global-exclude *.py[co]
+global-exclude __pycache__

@@ -1,0 +1,5 @@
+# notebook temp files
+*.ipynb_checkpoints/
+
+# pip
+src/
