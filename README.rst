@@ -22,9 +22,14 @@ OWSLib-esgfwps
 
 The `OWSLib-esgfwps` package is an OWSLib_ extension for the ESGF_ compute WPS profile.
 
-
 * Free software: Apache Software License 2.0
 * Documentation: https://owslib-esgfwps.readthedocs.io.
+
+You can try Birdy online using Binder, just click on the binder link below.
+
+.. image:: https://mybinder.org/badge_logo.svg
+   :target: https://mybinder.org/v2/gh/bird-house/owslib-esgfwps.git/master?filepath=examples/notebooks
+   :alt: Binder Launcher
 
 Credits
 =======
