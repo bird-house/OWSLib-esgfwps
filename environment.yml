@@ -1,0 +1,9 @@
+# conda env create -f environment.yml
+name: owslib-esgfwps
+channels:
+  - conda-forge
+dependencies:
+  - owslib>=0.17
+  # tests
+  - pytest
+  - flake8

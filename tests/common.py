@@ -1,0 +1,1 @@
+TEST_SU_OPENDAP = 'http://opendap.knmi.nl/knmi/thredds/dodsC/CLIPC/gerics/climatesignalmaps/EUR-44/tasmax/su_python-2-7-6_GERICS_ens-multiModel-climatesignalmap-rcp85-EUR-44_yr_20700101-20991231_1971-2000.nc'  # noqa

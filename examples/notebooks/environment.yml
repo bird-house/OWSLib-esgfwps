@@ -1,0 +1,9 @@
+# conda env update -f environment.yml
+name: owslib-esgfwps
+channels:
+  - conda-forge
+dependencies:
+  # notebook
+  - jupyterlab
+  - ipywidgets
+  - nodejs
