@@ -1,6 +1,8 @@
 pip
+bumpversion
 wheel
+watchdog
 flake8
 twine
-
+Sphinx
 pytest
