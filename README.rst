@@ -2,6 +2,11 @@
 OWSLib-esgfwps
 ==============
 
+
+.. image:: https://img.shields.io/badge/docs-latest-brightgreen.svg
+   :target: https://owslib-esgfwps.readthedocs.io/en/latest/?badge=latest
+   :alt: Documentation Status
+
 .. image:: https://img.shields.io/travis/bird-house/OWSLib-esgfwps.svg
    :target: https://travis-ci.org/bird-house/OWSLib-esgfwps
    :alt: Travis Build
@@ -20,26 +25,6 @@ The `OWSLib-esgfwps` package is an OWSLib_ extension for the ESGF_ compute WPS p
 
 * Free software: Apache Software License 2.0
 * Documentation: https://owslib-esgfwps.readthedocs.io.
-
-Installation
-============
-
-Install from GitHub
--------------------
-
-Check out code from the birdhouse GitHub repo and start the installation:
-
-.. code-block:: sh
-
-   $ git clone https://github.com/bird-house/OWSLib-esgfwps.git
-   $ cd OWSLib-esgfwps
-   $ conda env create -f environment.yml
-   $ python setup.py install
-
-Usage
-=====
-
-.. automodule:: owslib-esgfwps
 
 Credits
 =======
