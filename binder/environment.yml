@@ -1,1 +1,9 @@
-../environment.yml
+# conda env create -f environment.yml
+name: owslib-esgfwps-demo
+channels:
+  - conda-forge
+dependencies:
+  # owslib
+  - owslib>=0.17
+  - pip:
+    - -e git+https://github.com/bird-house/OWSLib-esgfwps.git@master#egg=owslib-esgfwps
