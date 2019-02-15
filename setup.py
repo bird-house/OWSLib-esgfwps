@@ -4,7 +4,10 @@
 """The setup script."""
 
 from setuptools import setup, find_packages
-from owslib_esgfwps import __version__, __author__, __email__
+
+version = __import__('owslib_esgfwps').__version__
+author = __import__('owslib_esgfwps').__author__
+email = __import__('owslib_esgfwps').__email__
 
 with open('README.rst') as readme_file:
     readme = readme_file.read()
@@ -17,7 +20,7 @@ requirements = [line.strip() for line in open('requirements.txt')]
 
 setup(
     name='owslib-esgfwps',
-    version=__version__,
+    version=version,
     classifiers=[
         'Development Status :: 2 - Pre-Alpha',
         'Intended Audience :: Developers',
@@ -31,9 +34,7 @@ setup(
     long_description=readme + '\n\n' + changes,
     url='https://github.com/bird-house/OWSLib-esgfwps',
     keywords='owslib extension wps esgf',
-    author=__author__,
-    author_email=__email__,
-    packages=find_packages('owslib_esgfwps'),
-    include_package_data=True,
-    zip_safe=False,
+    author=author,
+    author_email=email,
+    py_modules=['owslib_esgfwps'],
 )
