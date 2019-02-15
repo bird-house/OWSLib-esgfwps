@@ -5,5 +5,3 @@ channels:
 dependencies:
   # owslib
   - owslib>=0.17
-  - pip:
-    - -e git+https://github.com/bird-house/OWSLib-esgfwps.git@master#egg=owslib-esgfwps
