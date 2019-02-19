@@ -7,7 +7,7 @@ Development
 Get Started!
 ============
 
-Check out code from the birdy GitHub repo and start the installation::
+Check out code from the `OWSLib-esgfwps` GitHub repo and start the installation::
 
    $ git clone https://github.com/bird-house/OWSLib-esgfwps.git
    $ cd OWSLib-esgfwps
@@ -40,7 +40,7 @@ documentation locally you can use the `Makefile`::
 Bump a new version
 ===================
 
-Make a new version of Birdy in the following steps:
+Make a new version of `OWSLib-esgfwps` in the following steps:
 
 * Make sure everything is commit to GitHub.
 * Update ``CHANGES.rst`` with the next version.
