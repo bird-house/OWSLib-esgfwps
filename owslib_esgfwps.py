@@ -6,7 +6,10 @@ ESGF WPS profile.
 
 Example
 -------
-Use the `owslib-esgfwps` extension to execute the `emu_subset` WPS process::
+In this example we are using a local installatin of the Pelican WPS service:
+https://github.com/bird-house/pelican
+
+Use the `owslib-esgfwps` extension to execute the `pelican_subset` WPS process::
 
     >>> from owslib.wps import WebProcessingService
     >>> from owslib_esgfwps import Domain, Dimension, Variable
@@ -14,7 +17,7 @@ Use the `owslib-esgfwps` extension to execute the `emu_subset` WPS process::
     >>> d0 = Domain([Dimension('time', 0, 1, crs='indices')])
     >>> OPENDAP_URL = 'http://'
     >>> v0 = Variable(uri=OPENDAP_URL, var_name='su')
-    >>> exec = wps.execute('emu_subset', inputs=[('domain', d0), ('variable', v0)])
+    >>> exec = wps.execute('pelican_subset', inputs=[('domain', d0), ('variable', v0)])
 """
 
 __author__ = """Carsten Ehbrecht"""
