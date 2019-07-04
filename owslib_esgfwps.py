@@ -25,7 +25,7 @@ __email__ = 'ehbrecht@dkrz.de'
 __version__ = '0.1.0'
 
 import json
-from uuid import uuid1
+from uuid import uuid4
 
 from owslib.wps import ComplexDataInput
 
@@ -41,16 +41,16 @@ class Parameter(ComplexDataInput):
             mimeType="application/json",
             encoding=None,
             schema=None)
-        self._data = {}
-        self._data['name'] = name or uuid1().hex
+        self._name = name or uuid4().hex
 
     @property
     def name(self):
-        return self._data['name']
+        return self._name
 
     @property
     def json(self):
-        return self._data
+        data = dict(name=self.name)
+        return [data]
 
     @classmethod
     def from_json(cls, data):
@@ -66,91 +66,169 @@ class Parameter(ComplexDataInput):
             self.from_json(json.loads(value))
 
     def __repr__(self):
-        params = ''
-        for key in self._data:
-            params += "{}='{}', ".format(key, self._data[key])
-        return "{}({})".format(self.__class__.__name__, params.strip(', '))
+        params = "{}='{}'".format('name', self.name)
+        return "{}({})".format(self.__class__.__name__, params)
 
 
 class Variable(Parameter):
     def __init__(self, uri, var_name=None, id=None, name=None):
         super(Variable, self).__init__(name)
-        self._data['uri'] = uri
+        self._uri = uri
+        self._id = None
 
         if id:
-            self._data['id'] = id
+            self._id = id
             if '|' in id:
                 var_name, name = id.split('|')
             else:
                 raise ParameterError('Variable id must contain a variable name and id.')
         if var_name:
-            self._data['var_name'] = var_name
+            self._var_name = var_name
             if not id:
-                self._data['id'] = '{}|{}'.format(var_name, self.name)
+                self._id = '{}|{}'.format(var_name, self.name)
 
-        if 'id' not in self._data:
+        if not self._id:
             raise ParameterError('Variable must have an id.')
-        if 'var_name' not in self._data:
-            raise ParameterError('Variable must have a var_name.')
 
     @property
     def id(self):
-        return self._data['id']
+        return self._id
 
     @property
     def var_name(self):
-        return self._data['var_name']
+        return self._var_name
 
     @property
     def uri(self):
-        return self._data['uri']
+        return self._uri
+
+    @property
+    def json(self):
+        data = dict(uri=self.uri, id=self.id)
+        return [data]
 
 
 class Dimension(Parameter):
-    def __init__(self, name=None, start=None, end=None, step=1, crs="values"):
+    def __init__(self, name=None, start=None, end=None, step=1, crs=None):
         super(Dimension, self).__init__(name)
-        self._data['start'] = start
-        self._data['end'] = end
-        self._data['step'] = step
-        self._data['crs'] = crs
+        self._start = start
+        self._end = end
+        self._step = step
+        self.crs = crs or "values"
 
     @property
     def start(self):
-        return self._data['start']
+        return self._start
 
     @property
     def end(self):
-        return self._data['end']
+        return self._end
 
     @property
     def step(self):
-        return self._data['step']
+        return self._step
 
     @property
     def crs(self):
-        return self._data['crs']
+        return self._crs
 
     @crs.setter
     def crs(self, value):
         if value in ["values", "indices"]:
-            self._data['crs'] = value
+            self._crs = value
         else:
             raise ValueError
+
+    @property
+    def json(self):
+        data = {}
+        data[self.name] = dict(start=self.start, end=self.end, step=self.step, crs=self.crs)
+        return data
+
+    @classmethod
+    def from_json(cls, data):
+        name = list(data.keys())[0]
+        new_data = dict(name=name)
+        new_data.update(data[name])
+        return cls(**new_data)
 
 
 class Domain(Parameter):
     def __init__(self, dimensions=None, mask=None, name=None):
         super(Domain, self).__init__(name)
-        if dimensions:
-            self._data['dimensions'] = [dim.json if isinstance(dim, Dimension) else dim for dim in dimensions]
-        else:
-            self._data['dimensions'] = []
-        self._data['mask'] = mask
+        self._dimensions = dimensions
+        self._mask = mask
+
+    @property
+    def id(self):
+        return self.name
 
     @property
     def dimensions(self):
-        return self._data['dimensions']
+        return self._dimensions
 
     @property
     def mask(self):
-        return self._data['mask']
+        return self._mask
+
+    @property
+    def json(self):
+        data = dict(id=self.id)
+        for dim in self.dimensions:
+            data.update(dim.json)
+        return [data]
+
+    @classmethod
+    def from_json(cls, data):
+        dimensions = []
+        for key in list(data.keys()):
+            if key not in ['id', 'mask']:
+                dimensions.append(Dimension.from_json({key: data[key]}))
+                del data[key]
+        data['dimensions'] = dimensions
+        data['name'] = data['id']
+        del data['id']
+        return cls(**data)
+
+
+class Operation(Parameter):
+    def __init__(self, name=None, domain=None, inputs=None, result=None):
+        super(Operation, self).__init__(name)
+        self._domain = domain
+        self._inputs = inputs
+        self._result = result or uuid4().hex
+
+    @property
+    def domain(self):
+        if hasattr(self._domain, 'name'):
+            return self._domain.name
+        return self._domain
+
+    @property
+    def inputs(self):
+        names = []
+        for inpt in self._inputs:
+            if hasattr(inpt, 'name'):
+                names.append(inpt.name)
+            else:
+                names.append(inpt)
+        return names
+
+    @property
+    def result(self):
+        return self._result
+
+    @property
+    def json(self):
+        data = dict(
+            name=self.name,
+            domain=self.domain,
+            input=self.inputs,
+            result=self.result)
+        return [data]
+
+    @classmethod
+    def from_json(cls, data):
+        data['inputs'] = data['input']
+        del data['input']
+        return cls(**data)
