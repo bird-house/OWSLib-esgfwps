@@ -77,6 +77,7 @@ def test_domains():
     d0 = Domain(dict(time=Dimension(0, 1, crs='indices')))
     domains = Domains([d0])
     assert Domains.from_json(domains.json).domains[0].id == d0.id
+    assert d0.id in str(domains)
 
 
 def test_variable_compat():
@@ -107,6 +108,7 @@ def test_variables():
     tas = Variable(uri='http://data.test.org/tas.nc', var_name='tas')
     vars = Variables([tas])
     assert Variables.from_json(vars.json).variables[0].var_name == 'tas'
+    assert 'tas' in str(vars)
 
 
 def test_operation_compat():
@@ -145,3 +147,4 @@ def test_operations():
     operation = Operation('subset', domain='d0', input=['tas'])
     operations = Operations([operation])
     assert Operations.from_json(operations.json).operations[0].name == operation.name
+    assert operation.name in str(operations)

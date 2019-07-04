@@ -142,6 +142,10 @@ class Variables(Parameter):
         variables = [Variable.from_json(var) for var in data]
         return cls(variables=variables)
 
+    @property
+    def params(self):
+        return dict(variables=[var.id for var in self.variables])
+
 
 class Dimension(Parameter):
     def __init__(self, start=None, end=None, step=1, crs=None):
@@ -245,6 +249,10 @@ class Domains(Parameter):
         domains = [Domain.from_json(domain) for domain in data]
         return cls(domains=domains)
 
+    @property
+    def params(self):
+        return dict(domains=[domain.id for domain in self.domains])
+
 
 class Operation(Parameter):
     def __init__(self, name=None, domain=None, input=None, result=None, axes=None, bins=None):
@@ -323,3 +331,7 @@ class Operations(Parameter):
     def from_json(cls, data):
         operations = [Operation.from_json(op) for op in data]
         return cls(operations=operations)
+
+    @property
+    def params(self):
+        return dict(operations=[op.name for op in self.operations])
