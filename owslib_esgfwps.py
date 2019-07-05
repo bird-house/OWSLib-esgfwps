@@ -73,7 +73,7 @@ class Parameter(ComplexDataInput):
 class Output(Parameter):
     def __init__(self, id=None, uri=None, domain=None, mimetype=None):
         super(Output, self).__init__()
-        self._id = id or uuid4.hex()
+        self._id = id or uuid4().hex
         self._uri = uri
         self._domain = domain
         self._mimetype = mimetype
