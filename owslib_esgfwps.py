@@ -73,10 +73,13 @@ class Parameter(ComplexDataInput):
 class Output(Parameter):
     def __init__(self, id=None, uri=None, domain=None, mimetype=None):
         super(Output, self).__init__()
-        self._id = id
+        self._id = id or uuid4.hex()
         self._uri = uri
         self._domain = domain
         self._mimetype = mimetype
+
+        if not self._uri:
+            raise ParameterError('Variable must have a uri.')
 
     @property
     def id(self):
@@ -136,6 +139,14 @@ class Outputs(Parameter):
     def from_json(cls, data):
         outputs = [Output.from_json(output) for output in data]
         return cls(outputs=outputs)
+
+    @classmethod
+    def from_owslib(cls, process_outputs):
+        import yaml
+        for output in process_outputs:
+            if output.identifier == 'output':
+                return cls.from_json(data=yaml.load(output.data[0]))
+        return cls(outputs=[])
 
     @property
     def params(self):

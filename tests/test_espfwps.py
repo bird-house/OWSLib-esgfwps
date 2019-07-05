@@ -32,12 +32,6 @@ def test_output_compat():
 
 
 def test_outputs():
-    data = [{
-        "uri": "http://test.org/output.nc",
-        "id": "tas_avg_mon",
-        "domain": {"id": "d0"},
-        "mime-type": "x-application/netcdf",
-    }]
     output = Output(id="tas_avg_mon", uri="http://test.org/output.nc")
     outputs = Outputs([output])
     assert Outputs.from_json(outputs.json).outputs[0].uri == output.uri
