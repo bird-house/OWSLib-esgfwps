@@ -101,6 +101,7 @@ def test_domains():
     domains = Domains([d0])
     assert Domains.from_json(domains.json).domains[0].id == d0.id
     assert d0.id in str(domains)
+    assert 'time' in domains.value
 
 
 def test_variable_compat():
@@ -132,6 +133,11 @@ def test_variables():
     vars = Variables([tas])
     assert Variables.from_json(vars.json).variables[0].var_name == 'tas'
     assert 'tas' in str(vars)
+    assert 'tas' in vars.value
+    new_value = Variables()
+    new_value.value = vars.value
+    # TODO: not working
+    # assert new_value.variables[0].var_name == 'tas'
 
 
 def test_operation_compat():
@@ -171,3 +177,4 @@ def test_operations():
     operations = Operations([operation])
     assert Operations.from_json(operations.json).operations[0].name == operation.name
     assert operation.name in str(operations)
+    assert 'subset' in operations.value

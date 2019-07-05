@@ -25,6 +25,7 @@ __email__ = 'ehbrecht@dkrz.de'
 __version__ = '0.1.0'
 
 import json
+import yaml
 from uuid import uuid4
 
 from owslib.wps import ComplexDataInput
@@ -34,13 +35,9 @@ class ParameterError(Exception):
     pass
 
 
-class Parameter(ComplexDataInput):
+class Parameter(object):
     def __init__(self):
-        super(Parameter, self).__init__(
-            value=None,
-            mimeType="application/json",
-            encoding=None,
-            schema=None)
+        pass
 
     @property
     def json(self):
@@ -51,15 +48,6 @@ class Parameter(ComplexDataInput):
         return cls(**data)
 
     @property
-    def value(self):
-        return json.dumps(self.json)
-
-    @value.setter
-    def value(self, value):
-        if value:
-            self.from_json(json.loads(value))
-
-    @property
     def params(self):
         return {}
 
@@ -68,6 +56,24 @@ class Parameter(ComplexDataInput):
         for key, value in self.params.items():
             params += "{}='{}',".format(key, value)
         return "{}({})".format(self.__class__.__name__, params.strip(","))
+
+
+class WPSParameter(ComplexDataInput, Parameter):
+    def __init__(self):
+        super(WPSParameter, self).__init__(
+            value=None,
+            mimeType="application/json",
+            encoding=None,
+            schema=None)
+
+    @property
+    def value(self):
+        return json.dumps(self.json)
+
+    @value.setter
+    def value(self, value):
+        if value:
+            self.from_json(yaml.safe_load(value))
 
 
 class Output(Parameter):
@@ -142,10 +148,9 @@ class Outputs(Parameter):
 
     @classmethod
     def from_owslib(cls, process_outputs):
-        import yaml
         for output in process_outputs:
             if output.identifier == 'output':
-                return cls.from_json(data=yaml.load(output.data[0]))
+                return cls.from_json(data=yaml.safe_load(output.data[0]))
         return cls(outputs=[])
 
     @property
@@ -207,7 +212,7 @@ class Variable(Parameter):
         return dict(id=self.id)
 
 
-class Variables(Parameter):
+class Variables(WPSParameter):
     def __init__(self, variables=None):
         super(Variables, self).__init__()
         self._variables = variables or []
@@ -314,7 +319,7 @@ class Domain(Parameter):
         return dict(id=self.id)
 
 
-class Domains(Parameter):
+class Domains(WPSParameter):
     def __init__(self, domains=None):
         super(Domains, self).__init__()
         self._domains = domains or []
@@ -397,7 +402,7 @@ class Operation(Parameter):
         return dict(name=self.name)
 
 
-class Operations(Parameter):
+class Operations(WPSParameter):
     def __init__(self, operations=None):
         super(Operations, self).__init__()
         self._operations = operations or []

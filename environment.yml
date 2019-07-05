@@ -4,6 +4,7 @@ channels:
   - conda-forge
 dependencies:
   - owslib>=0.17
+  - pyyaml
   # tests
   - pytest
   - flake8
