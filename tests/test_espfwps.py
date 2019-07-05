@@ -5,6 +5,8 @@ https://github.com/ESGF/esgf-compute-api/blob/devel/docs/source/cwt.compat.rst
 """
 
 from owslib_esgfwps import (
+    Output,
+    Outputs,
     Domain,
     Domains,
     Dimension,
@@ -13,6 +15,33 @@ from owslib_esgfwps import (
     Operation,
     Operations
 )
+
+
+def test_output_compat():
+    data = {
+        "uri": "http://test.org/output.nc",
+        "id": "tas_avg_mon",
+        "domain": {"id": "d0"},
+        "mime-type": "x-application/netcdf",
+    }
+    # from json
+    output = Output.from_json(data)
+    assert output.uri == data['uri']
+    # json
+    assert output.json['uri'] == data['uri']
+
+
+def test_outputs():
+    data = [{
+        "uri": "http://test.org/output.nc",
+        "id": "tas_avg_mon",
+        "domain": {"id": "d0"},
+        "mime-type": "x-application/netcdf",
+    }]
+    output = Output(id="tas_avg_mon", uri="http://test.org/output.nc")
+    outputs = Outputs([output])
+    assert Outputs.from_json(outputs.json).outputs[0].uri == output.uri
+    assert output.id in str(outputs)
 
 
 def test_dimension_compat():

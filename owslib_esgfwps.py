@@ -70,6 +70,78 @@ class Parameter(ComplexDataInput):
         return "{}({})".format(self.__class__.__name__, params.strip(","))
 
 
+class Output(Parameter):
+    def __init__(self, id=None, uri=None, domain=None, mimetype=None):
+        super(Output, self).__init__()
+        self._id = id
+        self._uri = uri
+        self._domain = domain
+        self._mimetype = mimetype
+
+    @property
+    def id(self):
+        return self._id
+
+    @property
+    def uri(self):
+        return self._uri
+
+    @property
+    def domain(self):
+        return self._domain
+
+    @property
+    def mimetype(self):
+        return self._mimetype
+
+    @property
+    def json(self):
+        data = dict(uri=self.uri)
+        if self.id:
+            data['id'] = self.id
+        if self.domain:
+            data['domain'] = self.domain
+        if self.mimetype:
+            data['mime-type'] = self.mimetype
+        return data
+
+    @classmethod
+    def from_json(cls, data):
+        # TODO: use mimetype as key
+        new_data = data.copy()
+        if 'mime-type' in data:
+            new_data['mimetype'] = data['mime-type']
+            del new_data['mime-type']
+        return cls(**new_data)
+
+    @property
+    def params(self):
+        return self.json
+
+
+class Outputs(Parameter):
+    def __init__(self, outputs=None):
+        super(Outputs, self).__init__()
+        self._outputs = outputs or []
+
+    @property
+    def outputs(self):
+        return self._outputs
+
+    @property
+    def json(self):
+        return [output.json for output in self.outputs]
+
+    @classmethod
+    def from_json(cls, data):
+        outputs = [Output.from_json(output) for output in data]
+        return cls(outputs=outputs)
+
+    @property
+    def params(self):
+        return dict(outputs=[output.id for output in self.outputs])
+
+
 class Variable(Parameter):
     def __init__(self, uri, var_name=None, id=None, domain=None):
         super(Variable, self).__init__()
