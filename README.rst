@@ -31,6 +31,12 @@ You can try the `OWSLib-esgfwps` extension online using Binder, just click on th
    :target: https://mybinder.org/v2/gh/bird-house/owslib-esgfwps.git/master?filepath=examples/notebooks
    :alt: Binder Launcher
 
+Or view the examples online on NBViewer.
+
+.. image:: https://github.com/jupyter/design/blob/master/logos/Badges/nbviewer_badge.svg
+   :target: https://nbviewer.jupyter.org/github/bird-house/OWSLib-esgfwps/tree/master/examples/notebooks/
+   :alt: NBViewer
+
 Credits
 =======
 

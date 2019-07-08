@@ -6,7 +6,7 @@ ESGF WPS profile.
 
 Example
 -------
-In this example we are using a local installatin of the Pelican WPS service:
+In this example we are using a local installation of the Pelican WPS service:
 https://github.com/bird-house/pelican
 
 Use the `owslib-esgfwps` extension to execute the `pelican_subset` WPS process::
@@ -14,10 +14,11 @@ Use the `owslib-esgfwps` extension to execute the `pelican_subset` WPS process::
     >>> from owslib.wps import WebProcessingService
     >>> from owslib_esgfwps import Domain, Dimension, Variable
     >>> wps = WebProcessingService(url='http://localhost:5000/wps')
-    >>> d0 = Domain([Dimension('time', 0, 1, crs='indices')])
-    >>> OPENDAP_URL = 'http://'
-    >>> v0 = Variable(uri=OPENDAP_URL, var_name='su')
-    >>> exec = wps.execute('pelican_subset', inputs=[('domain', d0), ('variable', v0)])
+    >>> d0 = Domain(dict(time=Dimension(0, 1, crs='indices')))
+    >>> OPENDAP_URL = 'http://nowhere/tas.nc'
+    >>> v0 = Variable(uri=OPENDAP_URL, var_name='tas')
+    >>> from owslib_esgfwps import Domains, Variables
+    >>> exec = wps.execute('pelican_subset', inputs=[('domain', Domains([d0])), ('variable', Variables([v0]))])
 """
 
 __author__ = """Carsten Ehbrecht"""
