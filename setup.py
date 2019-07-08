@@ -3,24 +3,25 @@
 
 """The setup script."""
 
+import os
+
 from setuptools import setup, find_packages
 
-version = __import__('owslib_esgfwps').__version__
-author = __import__('owslib_esgfwps').__author__
-email = __import__('owslib_esgfwps').__email__
+here = os.path.abspath(os.path.dirname(__file__))
+README = open(os.path.join(here, 'README.rst')).read()
+CHANGES = open(os.path.join(here, 'CHANGES.rst')).read()
 
-with open('README.rst') as readme_file:
-    readme = readme_file.read()
+about = {}
+with open(os.path.join(here, 'owslib_esgfwps', '__version__.py'), 'r') as f:
+    exec(f.read(), about)
 
-with open('CHANGES.rst') as changes_file:
-    changes = changes_file.read()
-
-requirements = [line.strip() for line in open('requirements.txt')]
+reqs = [line.strip() for line in open('requirements.txt')]
+extra_reqs = [line.strip() for line in open('requirements_dev.txt')]
 
 
 setup(
     name='owslib-esgfwps',
-    version=version,
+    version=about['__version__'],
     classifiers=[
         'Development Status :: 2 - Pre-Alpha',
         'Intended Audience :: Developers',
@@ -29,12 +30,14 @@ setup(
         'Programming Language :: Python :: 3.6',
     ],
     description="OWSLib extension for the ESGF compute WPS profile",
-    install_requires=requirements,
     license="Apache Software License 2.0",
-    long_description=readme + '\n\n' + changes,
+    long_description=README + '\n\n' + CHANGES,
     url='https://github.com/bird-house/OWSLib-esgfwps',
-    keywords='owslib extension wps esgf',
-    author=author,
-    author_email=email,
-    py_modules=['owslib_esgfwps'],
+    keywords='owslib extension wps esgf cwt',
+    author=about['__author__'],
+    author_email=about['__email__'],
+    packages=find_packages(),
+    include_package_data=True,
+    install_requires=reqs,
+    extra_requires=extra_reqs,
 )
