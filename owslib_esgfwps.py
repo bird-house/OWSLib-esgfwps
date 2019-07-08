@@ -23,7 +23,7 @@ Use the `owslib-esgfwps` extension to execute the `pelican_subset` WPS process::
 
 __author__ = """Carsten Ehbrecht"""
 __email__ = 'ehbrecht@dkrz.de'
-__version__ = '0.1.0'
+__version__ = '0.2.0'
 
 import json
 import yaml
