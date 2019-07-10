@@ -7,3 +7,8 @@ dependencies:
   - jupyterlab
   - ipywidgets
   - nodejs
+  # xarray
+  - xarray
+  - dask
+  - netcdf4
+  - matplotlib
