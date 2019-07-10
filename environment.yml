@@ -3,7 +3,7 @@ name: owslib-esgfwps
 channels:
   - conda-forge
 dependencies:
-  - owslib>=0.17
+  - owslib=0.17.1
   - pyyaml
   # tests
   - pytest
